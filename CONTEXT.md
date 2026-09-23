@@ -61,45 +61,42 @@ only". Do not offer to switch unless the user raises it.
 
 ## 4. Current status
 
-**Phase 1 (Skeleton) — Units 1–3 COMPLETE, Unit 4 delivered, awaiting user rebuild.**
+**Phase 1 (Skeleton) — Units 1–4 COMPLETE, Unit 5 delivered, awaiting user rebuild.**
 
 ```
 Files on disk (verified by git):
   ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json, vite.config.ts,
-  tsconfig.json, .gitignore, package-lock.json  all committed
-node_modules: EXISTS (npm install run during Unit 2 experiment).
-Dev server verified starting (localhost 5173, blank — expected until index.html exists).
+  tsconfig.json, index.html, .gitignore, package-lock.json  all committed + pushed (origin/main)
+node_modules: EXISTS. Dev server verified working.
+Console (observed by user): 404 for /src/main.tsx (dangling script ref — resolves at Unit 5),
+  404 for favicon.ico (harmless; Phase 10 loose end).
 ```
 
-Phase 1 remaining after Unit 4: `src/main.tsx` → `src/App.tsx`. Gate: `npm run dev` renders a page.
+Phase 1 remaining after Unit 5: `src/App.tsx`. Gate: `npm run dev` renders a page.
 
 ### ⬅ Where we stopped
 
-**Units 1–3 = DONE.**
-- U1 `package.json` — rebuild byte-identical, confidence 4, caret/lockfile passed.
-- U2 `vite.config.ts` — rebuild passed (style diff), confidence 3, rename experiment run live
-  (silent fallback observed), convention question passed.
-- U3 `tsconfig.json` — rebuild initially missing `target`/`lib`/`module`; user reasoned the
-  three back without peeking, file now matches. Type-erasure question passed ("erased; not
-  runtime data"). **User's confidence rating (1–5) for Unit 3 still owed** — ask.
+**Units 1–4 = DONE.** Ratings: U1=4, U2=3, U3=2, **U4 rating still owed — ask.**
+- U4 note: first answer attempt was copy-pasted from assistant's own explanation — called out
+  plainly. Assistant re-explained ("the relay, take two" — browser speaks one language, Vite
+  translates). Second attempt, user's own words, passed. Lesson logged: when user can't answer,
+  the fix is re-explain, not push. User pushed back correctly: "I have never read about it" —
+  true, and the loop assumes explanation-first.
 
-**Unit 4 = `index.html` — delivered and explained.** Pending question the user owes:
+**Unit 5 = `src/main.tsx` — delivered and explained.** Imports `./App` (which doesn't exist
+yet — same intentional dangling reference as U4's script tag; resolves in Unit 6). Pending question:
 
-> **Why is `index.html` the entry point of the app, and `src/main.tsx` is not? What does the
-> browser actually request when you open the dev-server URL?**
+> **`getElementById('root')` can return `null`. What does the `!` after it *claim*, what does
+> `strict: true` from tsconfig (your U3 unit) do with that claim, and what happens at runtime
+> if the claim is false?**
 
-(Correct answer involves: the browser only understands HTML/CSS/JS — it doesn't know React,
-Vite, or modules-bundled-by-a-dev-server; it requests a URL and expects HTML back; `index.html`
-is that document, and it *reaches* JS via a `<script>` tag. Vite inverts the classic bundler
-model: HTML is the entry graph root, not JS. `main.tsx` only runs because index.html loaded it.
-Bonus: dev server URL `/` maps to index.html by convention, like the vite.config naming lesson.)
+(Correct answer involves: `!` = non-null assertion, a compile-time promise that erases to
+nothing at runtime — same erasure story as U3; strictNullChecks forces you to face `|null`;
+if the claim is false, `createRoot(null)` throws at runtime, page stays blank. Compile-time
+guarantees are only as good as their enforcement, and `!` is manually bypassing it.)
 
-After rebuild + answer: fill Unit 3 rating, commit, then **Unit 5: `src/main.tsx`**.
-Expect the page to STILL be blank-ish after Unit 4 (empty #root div) — first visible render
-comes with Unit 5/6. Don't panic; gate is at end of Phase 1.
-
-**Housekeeping:** `.gitignore` (node_modules/, dist/) + `package-lock.json` committed.
-User owes 2 numbers: Unit 3 confidence rating.
+After rebuild + answer: fill U4 rating, commit+push, then **Unit 6: `src/App.tsx`** — that's
+the unit where the 404 dies and text finally renders. Phase 1 gate closes at Unit 6.
 
 ---
 
@@ -160,6 +157,10 @@ Append here whenever a decision changes. Newest last.
 - `2026-09-23` Unit 3 complete: rebuild repaired from reasoning (3 missing fields restored,
   no peeking), type-erasure question passed. User rated U2 = 3.
 - `2026-09-23` Unit 4 `index.html` delivered; awaiting blind rebuild.
+- `2026-09-23` Unit 4 complete: rebuild byte-identical, rating owed. First answer was verbatim
+  copy of assistant's explanation — flagged; re-explained; second attempt in user's words passed.
+  Commits now pushed to origin/main (user caught two "committed" claims without git proof).
+- `2026-09-23` Unit 5 `src/main.tsx` delivered; awaiting blind rebuild.
 
 ---
 

@@ -10,4 +10,5 @@ that costs you later.
 |------|------|-------|------------|-------|
 | 2026-09-22 | `package.json` | 1 | 4 | blind rebuild matched byte-for-byte; caret/lockfile question passed |
 | 2026-09-23 | `vite.config.ts` | 2 | 3 | blind rebuild passed (style diff only); rename experiment run live; convention question passed |
-| 2026-09-23 | `tsconfig.json` | 3 | — | *rebuild passed after 3-field repair (reasoned back, no peeking); type-erasure question passed; rating pending* |
+| 2026-09-23 | `tsconfig.json` | 3 | 2 | rebuild initially missing 3 fields, reasoned back without peeking; type-erasure question passed |
+| 2026-09-23 | `index.html` | 4 | — | *rebuild byte-identical; relay passed on 2nd attempt after re-explain; rating pending* |
