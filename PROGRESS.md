@@ -12,3 +12,4 @@ that costs you later.
 | 2026-09-23 | `vite.config.ts` | 2 | 3 | blind rebuild passed (style diff only); rename experiment run live; convention question passed |
 | 2026-09-23 | `tsconfig.json` | 3 | 2 | rebuild initially missing 3 fields, reasoned back without peeking; type-erasure question passed |
 | 2026-09-23 | `index.html` | 4 | — | *rebuild byte-identical; relay passed on 2nd attempt after re-explain; rating pending* |
+| 2026-09-23 | `src/main.tsx` | 5 | — | *rebuild confirmed via console (App import 500); non-null assertion question passed on 2nd attempt; rating pending* |

@@ -61,42 +61,41 @@ only". Do not offer to switch unless the user raises it.
 
 ## 4. Current status
 
-**Phase 1 (Skeleton) — Units 1–4 COMPLETE, Unit 5 delivered, awaiting user rebuild.**
+**Phase 1 (Skeleton) — Units 1–5 COMPLETE, Unit 6 delivered, Unit 6 = PHASE 1 GATE unit.**
 
 ```
 Files on disk (verified by git):
-  ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json, vite.config.ts,
-  tsconfig.json, index.html, .gitignore, package-lock.json  all committed + pushed (origin/main)
-node_modules: EXISTS. Dev server verified working.
-Console (observed by user): 404 for /src/main.tsx (dangling script ref — resolves at Unit 5),
-  404 for favicon.ico (harmless; Phase 10 loose end).
+  ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json, vite.config.ts, tsconfig.json,
+  index.html, src/main.tsx, .gitignore, package-lock.json  all committed + pushed (origin/main)
+node_modules: EXISTS. Dev server working.
+Console: 500 on /src/main.tsx = vite:import-analysis can't resolve './App' (intentional
+  dangling import; dies when Unit 6 lands). favicon.ico 404 (Phase 10 loose end).
 ```
-
-Phase 1 remaining after Unit 5: `src/App.tsx`. Gate: `npm run dev` renders a page.
 
 ### ⬅ Where we stopped
 
-**Units 1–4 = DONE.** Ratings: U1=4, U2=3, U3=2, **U4 rating still owed — ask.**
-- U4 note: first answer attempt was copy-pasted from assistant's own explanation — called out
-  plainly. Assistant re-explained ("the relay, take two" — browser speaks one language, Vite
-  translates). Second attempt, user's own words, passed. Lesson logged: when user can't answer,
-  the fix is re-explain, not push. User pushed back correctly: "I have never read about it" —
-  true, and the loop assumes explanation-first.
+**Units 1–5 = DONE.** Ratings: U1=4, U2=3, U3=2, **U4 + U5 ratings still owed — ask.**
+- U5 note: user ran the id-rename experiment honestly; it was BLOCKED (500 — code never
+  executed, chain died at unresolved import first). Used to teach: you can't observe a runtime
+  failure in code that never reaches runtime. Non-null assertion Q passed on 2nd attempt
+  (a: `!` silences strict at that spot; b: no check-time error, crash at run-time).
+  Nit corrected: tsc type-checks, never "compiles" (noEmit).
 
-**Unit 5 = `src/main.tsx` — delivered and explained.** Imports `./App` (which doesn't exist
-yet — same intentional dangling reference as U4's script tag; resolves in Unit 6). Pending question:
+**Unit 6 = `src/App.tsx` — delivered. THIS UNIT CLOSES PHASE 1'S GATE** — after user's blind
+rebuild, `npm run dev` should visibly render (text on screen, console clean except favicon).
+Pending question:
 
-> **`getElementById('root')` can return `null`. What does the `!` after it *claim*, what does
-> `strict: true` from tsconfig (your U3 unit) do with that claim, and what happens at runtime
-> if the claim is false?**
+> **You never write `App()`. Who calls it, when, and what does its return value physically
+> become on the page?**
 
-(Correct answer involves: `!` = non-null assertion, a compile-time promise that erases to
-nothing at runtime — same erasure story as U3; strictNullChecks forces you to face `|null`;
-if the claim is false, `createRoot(null)` throws at runtime, page stays blank. Compile-time
-guarantees are only as good as their enforcement, and `!` is manually bypassing it.)
+(Correct answer involves: React calls it — element tree walk, render/commit phases; JSX was
+transformed by the Unit 2 plugin into function calls/objects, NOT strings; React builds/updates
+real DOM nodes via its renderer; component returns a *description*, React is the one that
+materialises it. Ties Units 2+3+5 together.)
 
-After rebuild + answer: fill U4 rating, commit+push, then **Unit 6: `src/App.tsx`** — that's
-the unit where the 404 dies and text finally renders. Phase 1 gate closes at Unit 6.
+After rebuild + answer + gate verified: fill U4/U5 ratings, log "Phase 1 gate PASSED" in
+CONTEXT §4/§7 + ROADMAP checkbox, commit+push. Then **Phase 2, Unit 1: `src/styles/tokens.css`**.
+Phase 2 = pure CSS grind, one file per turn, expect slower pace.
 
 ---
 
@@ -161,6 +160,9 @@ Append here whenever a decision changes. Newest last.
   copy of assistant's explanation — flagged; re-explained; second attempt in user's words passed.
   Commits now pushed to origin/main (user caught two "committed" claims without git proof).
 - `2026-09-23` Unit 5 `src/main.tsx` delivered; awaiting blind rebuild.
+- `2026-09-23` Unit 5 complete: rebuild confirmed via live console; `!`/strict question passed
+  on 2nd attempt (a: `!` silences strict, b: crash at runtime, nothing at check time).
+- `2026-09-23` Unit 6 `src/App.tsx` delivered — closes Phase 1 gate.
 
 ---
 
