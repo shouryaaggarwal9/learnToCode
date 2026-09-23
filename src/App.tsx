@@ -4,5 +4,5 @@ export default function App() {
       <h1>Recall</h1>
       <p>A spaced-repetition study tracker.</p>
     </main>
-  )
+  );
 }

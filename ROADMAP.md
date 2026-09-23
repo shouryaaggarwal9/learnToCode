@@ -175,7 +175,7 @@ tests (added in v1.1 once there's something worth testing) · any component libr
 ## Current status
 
 - [x] Phase 0 — roadmap
-- [ ] Phase 1 — skeleton
+- [x] Phase 1 — skeleton
 - [ ] Phase 2 — CSS foundations
 - [ ] Phase 3 — data model
 - [ ] Phase 4 — state

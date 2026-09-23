@@ -61,41 +61,44 @@ only". Do not offer to switch unless the user raises it.
 
 ## 4. Current status
 
-**Phase 1 (Skeleton) — Units 1–5 COMPLETE, Unit 6 delivered, Unit 6 = PHASE 1 GATE unit.**
+**Phase 1 — ✅ GATE PASSED (2026-09-23). Phase 2 IN PROGRESS — Unit 1 delivered, awaiting rebuild.**
 
 ```
-Files on disk (verified by git):
-  ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json, vite.config.ts, tsconfig.json,
-  index.html, src/main.tsx, .gitignore, package-lock.json  all committed + pushed (origin/main)
-node_modules: EXISTS. Dev server working.
-Console: 500 on /src/main.tsx = vite:import-analysis can't resolve './App' (intentional
-  dangling import; dies when Unit 6 lands). favicon.ico 404 (Phase 10 loose end).
+Files on disk (verified by git, pushed to origin/main):
+  Phase 1 complete set: package.json, vite.config.ts, tsconfig.json, index.html,
+  src/main.tsx, src/App.tsx + .gitignore, package-lock.json, ROADMAP/CONTEXT/PROGRESS.md
+node_modules: exists. `npm run dev` renders "Recall" heading + paragraph. Verified by user.
+Console: favicon.ico 404 = PERMANENT & EXPLAINED (browser auto-requests /favicon.io when no
+  <link rel="icon"> present; dies in Phase 10 when we ship icon + link tag). Not a bug.
 ```
 
 ### ⬅ Where we stopped
 
-**Units 1–5 = DONE.** Ratings: U1=4, U2=3, U3=2, **U4 + U5 ratings still owed — ask.**
-- U5 note: user ran the id-rename experiment honestly; it was BLOCKED (500 — code never
-  executed, chain died at unresolved import first). Used to teach: you can't observe a runtime
-  failure in code that never reaches runtime. Non-null assertion Q passed on 2nd attempt
-  (a: `!` silences strict at that spot; b: no check-time error, crash at run-time).
-  Nit corrected: tsc type-checks, never "compiles" (noEmit).
+**Units 1–6 = DONE.** Ratings: U1=4, U2=3, U3=2, U4=3, U5=3, **U6 rating still owed — ask.**
+- U6 notes: rebuild structure correct, 1 typo (repetition), self-fixed from diff. Who-calls-App
+  answered correctly ONLY after assistant re-explained ("take two": Vite = printing press, not
+  reader; `<App />` = instruction card, not a call; React calls App inside render(); react-dom
+  creates real DOM nodes). User's final answer had right actor (render/React calls App) but
+  garbled material journey ("jsx to object to js", "adds to index.html" not #root, bystander
+  unnamed). ASSISTANT GAVE PRECISION CORRECTIONS as part of verdict and opened the gate —
+  treated as vocabulary gaps, not model gaps. If next phase shows this wobbling, revisit.
+- Favicon settled by Network tab: status 404, user observed directly (earlier "it vanished"
+  report was a misread console — lesson logged: contradicted observations get re-checked, not averaged).
 
-**Unit 6 = `src/App.tsx` — delivered. THIS UNIT CLOSES PHASE 1'S GATE** — after user's blind
-rebuild, `npm run dev` should visibly render (text on screen, console clean except favicon).
-Pending question:
+**Phase 2 = pure CSS, one file or one page+CSS per unit. Unit 1 = `src/styles/tokens.css`
+— delivered.** NOT imported anywhere yet — defined-but-unreferenced = zero effect (deliberate
+inverse of Phase 1's dangling-reference errors). Pending question:
 
-> **You never write `App()`. Who calls it, when, and what does its return value physically
-> become on the page?**
+> **Why are spacing tokens written in `rem` instead of `px`? What is `rem` anchored to, and
+> what user setting does it respect that `px` ignores?**
 
-(Correct answer involves: React calls it — element tree walk, render/commit phases; JSX was
-transformed by the Unit 2 plugin into function calls/objects, NOT strings; React builds/updates
-real DOM nodes via its renderer; component returns a *description*, React is the one that
-materialises it. Ties Units 2+3+5 together.)
+(Correct answer involves: rem = root <html> font-size (default 16px), user browser font-size
+setting changes it → whole layout scales; px is absolute, ignores user preference → a11y
+failure for low-vision users. Ties to ROADMAP Phase 11 accessibility pass.)
 
-After rebuild + answer + gate verified: fill U4/U5 ratings, log "Phase 1 gate PASSED" in
-CONTEXT §4/§7 + ROADMAP checkbox, commit+push. Then **Phase 2, Unit 1: `src/styles/tokens.css`**.
-Phase 2 = pure CSS grind, one file per turn, expect slower pace.
+After rebuild + answer + U6 rating: commit+push, then **Phase 2 Unit 2: `src/styles/base.css`**.
+Phase 2 remaining: base.css → Button.{tsx,css} → Shell.{tsx,css}. Gate: responsive app shell,
+no framework CSS.
 
 ---
 
@@ -163,6 +166,9 @@ Append here whenever a decision changes. Newest last.
 - `2026-09-23` Unit 5 complete: rebuild confirmed via live console; `!`/strict question passed
   on 2nd attempt (a: `!` silences strict, b: crash at runtime, nothing at check time).
 - `2026-09-23` Unit 6 `src/App.tsx` delivered — closes Phase 1 gate.
+- `2026-09-23` **Phase 1 GATE PASSED** — page renders, all 6 units logged (ratings 4,3,2,3,3,-).
+  Favicon 404 confirmed permanent + explained. Phase 2 begins; U4/U5 rated 3 each.
+- `2026-09-23` Phase 2 Unit 1 `src/styles/tokens.css` delivered; awaiting blind rebuild.
 
 ---
 
