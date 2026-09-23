@@ -61,32 +61,36 @@ only". Do not offer to switch unless the user raises it.
 
 ## 4. Current status
 
-**Phase 1 (Skeleton) — Unit 1 of ~6, IN PROGRESS, awaiting user rebuild.**
+**Phase 1 (Skeleton) — Unit 1 of ~6 COMPLETE, Unit 2 delivered, awaiting user rebuild.**
 
 ```
 Files on disk (verified by git):
-  ROADMAP.md      committed  a555f5b  "RR We are beginning a new learning phase..."
-  package.json    UNTRACKED  written by assistant, NOT yet committed
+  ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json  all committed
 Everything else: empty directories only.
 node_modules: does not exist. `npm install` has NOT been run.
 ```
 
-Phase 1 remaining units: `vite.config.ts` → `tsconfig.json` → `index.html` → `src/main.tsx` →
+Phase 1 remaining after Unit 2: `tsconfig.json` → `index.html` → `src/main.tsx` →
 `src/App.tsx`. Phase 1's gate is `npm run dev` rendering a page.
 
 ### ⬅ Where we stopped
 
-**Unit 1 = `package.json` — delivered and explained.**
+**Unit 1 = `package.json` — DONE.** Blind rebuild matched byte-for-byte, rated confidence 4,
+caret/lockfile question answered correctly, logged in `PROGRESS.md`, committed.
+(A stray `my.package.json` duplicate was deleted, at user's instruction.)
 
-The user has **not yet** confirmed their blind rebuild. The pending question they owe an answer to:
+**Unit 2 = `vite.config.ts` — delivered and explained.** The user has **not yet** confirmed their
+blind rebuild. The pending question they owe an answer to:
 
-> **What does `^19.3.0` guarantee, and what does it *not* guarantee? Where does the guarantee
-> actually come from?**
+> **Why does the config file live at the project root and get loaded automatically, and what
+> breaks if you rename it or move it into `src/`?**
 
-(Correct answer involves: caret locks the major / floats minor+patch, so it does *not* pin an exact
-version; the real guarantee comes from `package-lock.json` + committed lockfile.)
+(Correct answer involves: Vite (and the bundler world generally) uses convention-over-configuration
+— it looks for `vite.config.{ts,js,mjs,cjs}` at the root; rename/move it and Vite falls back to
+zero-config defaults, silently losing the React plugin — which means JSX stops compiling / HMR
+breaks — plus `root`/`base` customisations vanish. No error is thrown just for the missing config.)
 
-After the rebuild + answer: log it in `PROGRESS.md`, commit, then **Unit 2: `vite.config.ts`**.
+After the rebuild + answer: log it in `PROGRESS.md`, commit, then **Unit 3: `tsconfig.json`**.
 
 ---
 
@@ -137,6 +141,9 @@ Append here whenever a decision changes. Newest last.
 - `2026-09-22` Locked: app = Recall, stack = Vite+React+TS+plain CSS, loop = rebuild blind.
 - `2026-09-22` Build script set to `tsc --noEmit && vite build` (type-check as a pure gate) rather
   than the Vite template's `tsc -b`.
+- `2026-09-23` Unit 1 complete: rebuild verified identical, confidence 4, diagnostic passed.
+  `my.package.json` duplicate removed by user request.
+- `2026-09-23` Unit 2 `vite.config.ts` delivered; awaiting blind rebuild.
 
 ---
 

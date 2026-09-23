@@ -8,4 +8,4 @@ that costs you later.
 
 | Date | Unit | Phase | Confidence | Notes |
 |------|------|-------|------------|-------|
-| 2026-09-22 | `package.json` | 1 | — | *pending rebuild* |
+| 2026-09-22 | `package.json` | 1 | 4 | blind rebuild matched byte-for-byte; caret/lockfile question passed |
