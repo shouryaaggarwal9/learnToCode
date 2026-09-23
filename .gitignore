@@ -1,0 +1,5 @@
+# Dependencies — reproducible from package.json + package-lock.json, never committed
+node_modules/
+
+# Build output — regenerable by `npm run build`, never committed
+dist/
