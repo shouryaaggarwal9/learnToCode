@@ -61,36 +61,45 @@ only". Do not offer to switch unless the user raises it.
 
 ## 4. Current status
 
-**Phase 1 (Skeleton) — Unit 1 of ~6 COMPLETE, Unit 2 delivered, awaiting user rebuild.**
+**Phase 1 (Skeleton) — Units 1–3 COMPLETE, Unit 4 delivered, awaiting user rebuild.**
 
 ```
 Files on disk (verified by git):
-  ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json  all committed
-Everything else: empty directories only.
-node_modules: does not exist. `npm install` has NOT been run.
+  ROADMAP.md, CONTEXT.md, PROGRESS.md, package.json, vite.config.ts,
+  tsconfig.json, .gitignore, package-lock.json  all committed
+node_modules: EXISTS (npm install run during Unit 2 experiment).
+Dev server verified starting (localhost 5173, blank — expected until index.html exists).
 ```
 
-Phase 1 remaining after Unit 2: `tsconfig.json` → `index.html` → `src/main.tsx` →
-`src/App.tsx`. Phase 1's gate is `npm run dev` rendering a page.
+Phase 1 remaining after Unit 4: `src/main.tsx` → `src/App.tsx`. Gate: `npm run dev` renders a page.
 
 ### ⬅ Where we stopped
 
-**Unit 1 = `package.json` — DONE.** Blind rebuild matched byte-for-byte, rated confidence 4,
-caret/lockfile question answered correctly, logged in `PROGRESS.md`, committed.
-(A stray `my.package.json` duplicate was deleted, at user's instruction.)
+**Units 1–3 = DONE.**
+- U1 `package.json` — rebuild byte-identical, confidence 4, caret/lockfile passed.
+- U2 `vite.config.ts` — rebuild passed (style diff), confidence 3, rename experiment run live
+  (silent fallback observed), convention question passed.
+- U3 `tsconfig.json` — rebuild initially missing `target`/`lib`/`module`; user reasoned the
+  three back without peeking, file now matches. Type-erasure question passed ("erased; not
+  runtime data"). **User's confidence rating (1–5) for Unit 3 still owed** — ask.
 
-**Unit 2 = `vite.config.ts` — delivered and explained.** The user has **not yet** confirmed their
-blind rebuild. The pending question they owe an answer to:
+**Unit 4 = `index.html` — delivered and explained.** Pending question the user owes:
 
-> **Why does the config file live at the project root and get loaded automatically, and what
-> breaks if you rename it or move it into `src/`?**
+> **Why is `index.html` the entry point of the app, and `src/main.tsx` is not? What does the
+> browser actually request when you open the dev-server URL?**
 
-(Correct answer involves: Vite (and the bundler world generally) uses convention-over-configuration
-— it looks for `vite.config.{ts,js,mjs,cjs}` at the root; rename/move it and Vite falls back to
-zero-config defaults, silently losing the React plugin — which means JSX stops compiling / HMR
-breaks — plus `root`/`base` customisations vanish. No error is thrown just for the missing config.)
+(Correct answer involves: the browser only understands HTML/CSS/JS — it doesn't know React,
+Vite, or modules-bundled-by-a-dev-server; it requests a URL and expects HTML back; `index.html`
+is that document, and it *reaches* JS via a `<script>` tag. Vite inverts the classic bundler
+model: HTML is the entry graph root, not JS. `main.tsx` only runs because index.html loaded it.
+Bonus: dev server URL `/` maps to index.html by convention, like the vite.config naming lesson.)
 
-After the rebuild + answer: log it in `PROGRESS.md`, commit, then **Unit 3: `tsconfig.json`**.
+After rebuild + answer: fill Unit 3 rating, commit, then **Unit 5: `src/main.tsx`**.
+Expect the page to STILL be blank-ish after Unit 4 (empty #root div) — first visible render
+comes with Unit 5/6. Don't panic; gate is at end of Phase 1.
+
+**Housekeeping:** `.gitignore` (node_modules/, dist/) + `package-lock.json` committed.
+User owes 2 numbers: Unit 3 confidence rating.
 
 ---
 
@@ -144,6 +153,13 @@ Append here whenever a decision changes. Newest last.
 - `2026-09-23` Unit 1 complete: rebuild verified identical, confidence 4, diagnostic passed.
   `my.package.json` duplicate removed by user request.
 - `2026-09-23` Unit 2 `vite.config.ts` delivered; awaiting blind rebuild.
+- `2026-09-23` Unit 2 complete: rebuild passed (style-only diff), rename experiment run live by
+  user (silent fallback observed), convention question passed. `.gitignore` + `package-lock.json`
+  committed. `npm install` has now been run.
+- `2026-09-23` Unit 3 `tsconfig.json` delivered; awaiting blind rebuild.
+- `2026-09-23` Unit 3 complete: rebuild repaired from reasoning (3 missing fields restored,
+  no peeking), type-erasure question passed. User rated U2 = 3.
+- `2026-09-23` Unit 4 `index.html` delivered; awaiting blind rebuild.
 
 ---
 
